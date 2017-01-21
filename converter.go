@@ -2,7 +2,8 @@ package main
 
 import ("bufio"
     "os"
-    "fmt")
+    "fmt"
+    "github.com/atotto/clipboard")
 
 func toLowerCase(s []byte) {
     for i := 0; i < len(s); i++ {
@@ -13,46 +14,53 @@ func toLowerCase(s []byte) {
 }
 
 func printDiscordLetters(s []byte) {
+    fmt.Println(discordLettersToString(s))
+}
+
+func discordLettersToString(s []byte) string {
+    var str = string("")
     for i := 0; i < len(s); i++ {
         if((s[i] >= 97 && s[i] <= 122)) {
-            fmt.Printf(":regional_indicator_%c: ", s[i])
+            str += ":regional_indicator_" + string(s[i]) + ": "
         }
         if(s[i] == 32) {
-            fmt.Printf("   ");
+            str += "   "
         }
         switch s[i] {
         case 48:
-            fmt.Printf(":zero: ")
+            str += ":zero: "
         case 49:
-            fmt.Printf(":one: ")
+            str += ":one: "
         case 50:
-            fmt.Printf(":two: ")
+            str += ":two: "
         case 51:
-            fmt.Printf(":three: ")
+            str += ":three: "
         case 52:
-            fmt.Printf(":four: ")
+            str += ":four: "
         case 53:
-            fmt.Printf(":five: ")
+            str += ":five: "
         case 54:
-            fmt.Printf(":six: ")
+            str += ":six: "
         case 55:
-            fmt.Printf(":seven: ")
+            str += ":seven: "
         case 56:
-            fmt.Printf(":eight: ")
+            str += ":eight: "
         case 57:
-            fmt.Printf(":nine: ")
+            str += ":nine: "
         }
     }
+    return str
 }
 
 func main() {
-    fmt.Println("Wpisz jakis tekst w ASCII")
-    read := bufio.NewReader(os.Stdin)
-    buf, _, _ := read.ReadLine()
-    toLowerCase(buf)
-    fmt.Println("Wklej to do Discord")
-    printDiscordLetters(buf)
-    fmt.Println()
-    fmt.Println("Wpisz cokolwiek aby zakonczyc")
-    read.ReadLine()
+    for {
+        fmt.Println("Wpisz jakis tekst w ASCII")
+        read := bufio.NewReader(os.Stdin)
+        buf, _, _ := read.ReadLine()
+        toLowerCase(buf)
+        fmt.Println("Wklej to do Discord\n\n")
+        printDiscordLetters(buf)
+        clipboard.WriteAll(discordLettersToString(buf))
+        fmt.Println("Skopiowano do schowka\n")
+    }
 }
